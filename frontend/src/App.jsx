@@ -5,7 +5,6 @@ import { Display } from "./components/Display"
 import UploadSong from './pages/UploadSongs.jsx'
 import ListSongs from './pages/ListSongs.jsx'
 import Header from './components/Header.jsx'
-import Display from "./components/Display"
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 

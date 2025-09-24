@@ -1,5 +1,5 @@
 import express from 'express'
-import { login, register, uploadMusic } from '../controllers/adminController.js'
+import { login, register, uploadMusic,deleteMusic } from '../controllers/adminController.js'
 import upload from '../middlewares/multer.js'
 
 const adminRouter = express.Router()
