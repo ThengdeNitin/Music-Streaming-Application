@@ -1,6 +1,6 @@
 import { Route, Routes, useLocation } from "react-router-dom"
-import { SideBar } from "./components/Sidebar.jsx"
-import { SideBarAdmin } from "./components/Sidebar-Admin.jsx"
+import { SideBar } from "./components/SideBar.jsx"
+import { SideBarAdmin } from "./components/SideBar-Admin.jsx"
 import { Display } from "./components/Display"
 import UploadSong from './pages/UploadSongs.jsx'
 import ListSongs from './pages/ListSongs.jsx'

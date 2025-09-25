@@ -3,7 +3,7 @@ import { PlayerContext } from "../context/PlayerContext"
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-export const UploadSongs = () => {
+const UploadSongs = () => {
 
   const { backendUrl } = useContext(PlayerContext);
   const navigate = useNavigate()
@@ -123,3 +123,5 @@ export const UploadSongs = () => {
     </div>
   )
 }
+
+export default UploadSongs

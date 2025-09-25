@@ -2,11 +2,11 @@ import logo from '../assets/play.png'
 import bird from '../assets/bird.jpg'
 import { IoIosAddCircle } from 'react-icons/io'
 import { IoMdMusicalNote } from 'react-icons/io'
-import { NavLink, Navigate, useNaviagte } from 'react-router-dom'
+import { NavLink, Navigate, useNavigate } from 'react-router-dom'
 
 export const SideBarAdmin = () => {
 
-  const navigate = useNaviagte()
+  const navigate = useNavigate()
 
   return (
     <div className='bg-gradient-to-t from-black to-gray-500 min-h-screen space-x-16 p-[1vw] items-center flex flex-col'>

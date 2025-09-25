@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { NewReleases } from "./NewReleases";
 
-export const Header = () => {
+const Header = () => {
 
   const [currentSongImage, setCurrentSongImage] = useState(null);
   const [currentSongTitle, setCurrentSongTitle] = useState(null);
@@ -36,3 +36,5 @@ export const Header = () => {
     </header>
   )
 }
+
+export default Header
