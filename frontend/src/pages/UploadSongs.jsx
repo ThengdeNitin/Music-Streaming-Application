@@ -2,7 +2,8 @@ import { useContext, useState } from "react";
 import { PlayerContext } from "../context/PlayerContext";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import assets from "../assets"; 
+import axios from "axios";
+import assets from "../assets"; // Make sure this exists
 
 const UploadSongs = () => {
   const { backendUrl } = useContext(PlayerContext);
@@ -10,10 +11,18 @@ const UploadSongs = () => {
 
   const [image, setImage] = useState(null);
   const [song, setSong] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+  const [songPreview, setSongPreview] = useState(null);
   const [songsData, setSongsData] = useState({ title: "", artist: "" });
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
+
+    if (!song || !image) {
+      toast.error("Please upload both song and image!");
+      return;
+    }
+
     try {
       const formData = new FormData();
       formData.append("title", songsData.title);
@@ -29,10 +38,12 @@ const UploadSongs = () => {
 
       if (data.success) {
         toast.success(data.message);
-        navigate("/list-songs");
+        navigate("/add-music");
         setSongsData({ title: "", artist: "" });
         setImage(null);
         setSong(null);
+        setImagePreview(null);
+        setSongPreview(null);
       } else {
         toast.error(data.message);
       }
@@ -54,42 +65,53 @@ const UploadSongs = () => {
         className="flex flex-col max-h-screen gap-8 text-gray-600 w-full max-w-xl mx-auto p-4 sm:p-6 md:p-8 shadow-lg rounded-xl shadow-black"
       >
         <div className="flex flex-col md:flex-row gap-6 items-center">
+          {/* Song Upload */}
           <div className="flex flex-col items-center gap-2">
             <p className="text-sm md:text-base">Upload Songs</p>
             <input
               type="file"
               id="song"
-              onChange={(e) => setSong(e.target.files[0])}
               accept="audio/*"
               hidden
+              onChange={(e) => {
+                const file = e.target.files[0];
+                setSong(file);
+                if (file) setSongPreview(URL.createObjectURL(file));
+              }}
             />
             <label htmlFor="song">
               <img
-                src={song ? URL.createObjectURL(song) : assets.upload_song}
+                src={songPreview || assets.upload_song}
                 className="w-24 h-24 md:h-32 cursor-pointer object-contain"
-                alt=""
+                alt="Upload Song"
               />
             </label>
           </div>
 
+          {/* Image Upload */}
           <div className="flex flex-col items-center gap-2">
             <p className="text-sm md:text-base">Upload Image</p>
             <input
               type="file"
               id="image"
               accept="image/*"
-              onChange={(e) => setImage(e.target.files[0])}
               hidden
+              onChange={(e) => {
+                const file = e.target.files[0];
+                setImage(file);
+                if (file) setImagePreview(URL.createObjectURL(file));
+              }}
             />
             <label htmlFor="image">
               <img
-                src={image ? URL.createObjectURL(image) : assets.upload_area}
+                src={imagePreview || assets.upload_area}
                 className="w-24 h-24 md:w-32 md:h-32 cursor-pointer object-contain"
-                alt=""
+                alt="Upload Image"
               />
             </label>
           </div>
 
+          {/* Song Title */}
           <div className="flex flex-col gap-2 w-full">
             <label htmlFor="title" className="text-sm md:text-base">
               Song Name
@@ -97,15 +119,16 @@ const UploadSongs = () => {
             <input
               type="text"
               id="title"
-              onChange={onChangeHandler}
               name="title"
               value={songsData.title}
+              onChange={onChangeHandler}
               className="bg-transparent w-full p-2.5 rounded-lg outline-none"
               placeholder="Song Name"
               required
             />
           </div>
 
+          {/* Artist Name */}
           <div className="flex flex-col gap-2 w-full">
             <label htmlFor="artist" className="text-sm md:text-base">
               Artist Name
@@ -113,9 +136,9 @@ const UploadSongs = () => {
             <input
               type="text"
               id="artist"
-              onChange={onChangeHandler}
               name="artist"
               value={songsData.artist}
+              onChange={onChangeHandler}
               className="bg-transparent w-full p-2.5 rounded-lg outline-none"
               placeholder="Artist Name"
               required
@@ -135,4 +158,3 @@ const UploadSongs = () => {
 };
 
 export default UploadSongs;
- 

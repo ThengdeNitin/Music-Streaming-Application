@@ -26,7 +26,7 @@ function App() {
           <div className="flex-1 overflow-y-scroll">
             <Routes>
                <Route path="/add-music" element={<UploadSong/>}/>
-               <Route path="/list-song" element={<ListSongs/>}/>
+               <Route path="/list-songs" element={<ListSongs/>}/>
             </Routes>
           </div>
           </>

@@ -1,171 +1,172 @@
-import adminModel from '../models/adminModel.js'
-import bcrypt from 'bcryptjs'
-import jwt from 'jsonwebtoken'
-import musicModel from '../models/musicModel.js'
-import path from 'path'
+import adminModel from '../models/adminModel.js';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import musicModel from '../models/musicModel.js';
+import path from 'path';
 
-const register = async(req, res) =>{
+// REGISTER
+const register = async (req, res) => {
   try {
-    const {username, email, password} = req.body
+    const { username, email, password } = req.body;
 
-    if(!username || !email || !password){
-      return res.status(400).json({ success: false, message: "All fields are required"})
+    if (!username || !email || !password) {
+      return res.status(400).json({ success: false, message: "All fields are required" });
     }
 
-    const existingUser = await adminModel.findOne({ email })
-    if(existingUser){
-      return res.status(409).json({ success: false, message: "User already exists"})
+    const existingUser = await adminModel.findOne({ email });
+    if (existingUser) {
+      return res.status(409).json({ success: false, message: "User already exists" });
     }
 
-    const salt = await bcrypt.genSalt(10)
-    const hashedPassword = await bcrypt.hash(password, salt)
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
     const newUser = new adminModel({
       username,
       email,
       password: hashedPassword
-    })
+    });
 
     await newUser.save();
 
-    const token = jwt.sign({ id: newUser._id}, process.env.JWT_SECRET, { expiresIn : '7d'})
+    const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
 
-    res.cookie(token, {
+    res.cookie('token', token, {
       httpOnly: false,
       secure: false,
       sameSite: 'Lax',
       maxAge: 7 * 24 * 60 * 60 * 1000
-    })
+    });
 
     const userResponse = {
       id: newUser._id,
       username: newUser.username,
       email: newUser.email
-    }
+    };
 
-    return res.status(201).json({ success: true, message: "Registered Successfully", user: userResponse, token})
-
+    return res.status(201).json({ success: true, message: "Registered Successfully", user: userResponse, token });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ success: false, message: "Internal server error"})
+    return res.status(500).json({ success: false, message: "Internal server error" });
   }
-}
+};
 
-const login = async(req, res) => {
+// LOGIN
+const login = async (req, res) => {
   try {
-    
-    const { email, password } = req.body
+    const { email, password } = req.body;
 
-    if(!email || !password) {
-      return res.status(400).json({ success: false, message: "All fields are required"})
-      }
-      
-      const user = await adminModel.findOne({ email })
-      if(!user){
-        return res.status(409).json({ success: false, message: "User not found"})
-      }
+    if (!email || !password) {
+      return res.status(400).json({ success: false, message: "All fields are required" });
+    }
 
-      const isPasswordValid = await bcrypt.compare(password, user.password)
-      if(!isPasswordValid){
-        return res.status(401).json({ success: false, message: "Invalid Credentiasls"})
-      } 
+    const user = await adminModel.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
 
-      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn : '7d'})
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(401).json({ success: false, message: "Invalid Credentials" });
+    }
 
-      res.cookie(token, {
-        httpOnly: false, 
-        secure: false,
-        sameSite: 'Lax',
-        maxAge: 7 * 24 * 60 * 60 * 1000
-      })
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
 
-      const userResponse = {
-        id: newUser._id,
-        username: newUser.username,
-        email: newUser.email
-      }
+    res.cookie('token', token, {
+      httpOnly: false,
+      secure: false,
+      sameSite: 'Lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000
+    });
 
-      return res.status(200).json({ success: true, message: "Login successfully", user:userResponse, token})
+    const userResponse = {
+      id: user._id,
+      username: user.username,
+      email: user.email
+    };
 
+    return res.status(200).json({ success: true, message: "Login successfully", user: userResponse, token });
   } catch (error) {
-    console.log(error)
-    return res.status(500).json({ success: false, message: "Internal server error"})
+    console.log(error);
+    return res.status(500).json({ success: false, message: "Internal server error" });
   }
-}
+};
 
+// UPLOAD MUSIC
 const uploadMusic = async (req, res) => {
   try {
     const { title, artist } = req.body;
-    
-    if(!title || !artist){
-      return res.status(400).json({ success: false, message: "All fields are required"})
+
+    if (!title || !artist) {
+      return res.status(400).json({ success: false, message: "All fields are required" });
     }
 
     const musicFile = req.files.music?.[0];
-    const imageFile = req.files.images?.[0];
+    const imageFile = req.files.image?.[0];
 
-    if(!musicFile){
-      return res.status(400).json({ success: false, message: "Image file is required"})
+    if (!musicFile) return res.status(400).json({ success: false, message: "Music file is required" });
+    if (!imageFile) return res.status(400).json({ success: false, message: "Image file is required" });
+
+    const allowedMusicExtensions = ['.mp3', '.wav'];
+    const allowedImageExtensions = ['.jpg', '.jpeg', '.png', '.webp'];
+
+    const musicExt = path.extname(musicFile.originalname).toLowerCase();
+    const imageExt = path.extname(imageFile.originalname).toLowerCase();
+
+    if (!allowedMusicExtensions.includes(musicExt)) {
+      return res.status(400).json({ success: false, message: "Invalid music file type" });
     }
 
-    const allowedExtensions = ['.mp3', '.wav', '.jpg', '.jpeg','.png', '.webp'];
-    const musicExt = path.extname(musicFile.originalname).toLowerCase()
-    const imageExt = path.extname(imageFile.originalname).toLowerCase()
-
-    if(!allowedExtensions.includes(musicExt) || !allowedExtensions.includes(imageExt)){
-      return res.status(400).json({ success: false, message: "Invalid file type. Only audio (.mp3, .wav) and image (.jpg, .jpeg, .png) files are allowed."});
+    if (!allowedImageExtensions.includes(imageExt)) {
+      return res.status(400).json({ success: false, message: "Invalid image file type" });
     }
-
-    const filePath = musicFile.path
-    const imageFilePath = imageFile.path
 
     const music = new musicModel({
       title,
       artist,
-      filePath,
-      imageFilePath
-    })
+      filePath: musicFile.path,
+      imageFilePath: imageFile.path
+    });
 
-    await music.save()
+    await music.save();
 
-    return res.status(201).json({ success: true, message: "Musicn uploaded successfully", music})
-
+    return res.status(201).json({ success: true, message: "Music uploaded successfully", music });
   } catch (error) {
-    console.log(error)
-    return res.status(500).json({ success: false, message: "Internal server error"})
+    console.log(error);
+    return res.status(500).json({ success: false, message: "Internal server error" });
   }
-}
+};
 
+// GET ALL MUSIC
 const getMusic = async (req, res) => {
   try {
     const musics = await musicModel.find();
-    if(!musics){
-      return res.json({ success: false, message: "No songs found"})
+    if (!musics || musics.length === 0) {
+      return res.status(404).json({ success: false, message: "No songs found" });
     }
 
-    res.json({ success: false, message: 'Internal server error'})
+    res.status(200).json({ success: true, music: musics });
   } catch (error) {
-     console.log(error)
-     return res.status(500).json({ success: false, message: "Internal server error"})  
+    console.log(error);
+    return res.status(500).json({ success: false, message: "Internal server error" });
   }
-}
+};
 
+// DELETE MUSIC
 const deleteMusic = async (req, res) => {
   try {
-    
     const { id } = req.params;
 
     const music = await musicModel.findByIdAndDelete(id);
-    if(!music){
-      return res.json({ success: false, message:"Music not found"});
-    } 
-    
-    res.status(200).json({ success: true, message:"Music Deleted Successfully", music})
-    
+    if (!music) {
+      return res.status(404).json({ success: false, message: "Music not found" });
+    }
+
+    res.status(200).json({ success: true, message: "Music Deleted Successfully", music });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ success: false, message:"Internal Server Error", music})
+    res.status(500).json({ success: false, message: "Internal Server Error" });
   }
-  } 
+};
 
-export { register, login, uploadMusic, getMusic, deleteMusic }
+export { register, login, uploadMusic, getMusic, deleteMusic };

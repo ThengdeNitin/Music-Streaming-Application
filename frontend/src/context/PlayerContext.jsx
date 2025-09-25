@@ -5,13 +5,15 @@ export const PlayerContext = createContext();
 
 const PlayerContextProvider = ({ children }) => {
   const backendUrl = "http://localhost:2000";
-
   const [songsData, setSongsData] = useState([]);
 
   const fetchSongs = async () => {
     try {
       const { data } = await axios.get(`${backendUrl}/api/admin/get-music`);
-      setSongsData(data.music);
+      if (data.success) {
+        setSongsData(data.music); 
+      }
+      console.log("Fetched songs:", data);
     } catch (error) {
       console.error("Failed to fetch songs:", error);
     }

@@ -5,11 +5,11 @@ import { IoIosMicrophone } from "react-icons/io";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-export const MusicCard = ({ music, fetchSongs }) => {
+const MusicCard = ({ music, fetchSongs }) => {
   const { backendUrl } = useContext(PlayerContext);
 
-  const audioSrc = `${backendUrl}/${music.filePath}`;
-  const imageSrc = `${backendUrl}/${music.imageFilePath}`;
+  const audioSrc = `${backendUrl}/${music.filePath.replace(/\\/g, '/')}`;
+  const imageSrc = `${backendUrl}/${music.imageFilePath.replace(/\\/g, '/')}`;  
 
   const handleDelete = async (id) => {
     try {
@@ -18,7 +18,9 @@ export const MusicCard = ({ music, fetchSongs }) => {
       );
       if (data.success) {
         toast.success(data.message);
-        fetchSongs(); // refresh song list
+        fetchSongs();
+        console.log(data);
+        // window.location.reload();
       }
     } catch (error) {
       console.error(error);
@@ -57,3 +59,5 @@ export const MusicCard = ({ music, fetchSongs }) => {
     </div>
   );
 };
+
+export default MusicCard

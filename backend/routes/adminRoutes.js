@@ -1,12 +1,23 @@
-import express from 'express'
-import { login, register, uploadMusic,deleteMusic } from '../controllers/adminController.js'
-import upload from '../middlewares/multer.js'
+import express from 'express';
+import { login, register, uploadMusic, deleteMusic, getMusic } from '../controllers/adminController.js';
+import upload from '../middlewares/multer.js';
 
-const adminRouter = express.Router()
+const adminRouter = express.Router();
 
-adminRouter.post('/register', register)
-adminRouter.post('/login', login)
-adminRouter.post('/add-music', upload.fields([{ name: 'music', maxCount: 1 },{ name: 'image', maxCount: 1 }]),uploadMusic);
-adminRouter.delete('/delete-music', deleteMusic)
+adminRouter.post('/register', register);
+adminRouter.post('/login', login);
 
-export default adminRouter
+adminRouter.post(
+  '/add-music',
+  upload.fields([
+    { name: 'music', maxCount: 1 },
+    { name: 'image', maxCount: 1 }
+  ]),
+  uploadMusic
+);
+
+adminRouter.get('/get-music', getMusic);
+
+adminRouter.delete('/delete-music/:id', deleteMusic);
+
+export default adminRouter;

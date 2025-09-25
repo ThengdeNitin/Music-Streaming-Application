@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 3000
 app.use(express.json())
 app.use(cors())
 
-app.use('/upload', express.static(path.join(path.resolve(), 'uploads')))
+app.use('/uploads', express.static(path.join(path.resolve(), 'uploads')));
 
 app.use('/api/admin', adminRouter)
 
