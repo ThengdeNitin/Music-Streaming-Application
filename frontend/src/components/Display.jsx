@@ -16,32 +16,30 @@ export const Display = () => {
       </div>
 
       <div className="mt-3 overflow-y-scroll">
-        {songsData
-          .map((song, index) => {
-            <div
-              key={song._id}
-              className="flex flex-row items-center justify-between py-2 px-2 hover:bg-gray-800 rounded-lg cursor-pointer"
-            >
-              <div className="flex flex-row items-center space-x-3">
-                <p className="text-gray-400">{index + 1}</p>
-                <img
-                  src={`${backendUrl}/${song.imageFilePath}`}
-                  alt={song.title}
-                  className="w-10 h-10 rounded-lg object-cover"
-                />
-                <div>
-                  <p className="font-semibold">{song.title}</p>
-                  <p className="text-sm text-gray-400">{song.artist}</p>
-                </div>
-
-                <div className="flex flex-row items-center space-x-3">
-                  <FaHeart className="text-gray-400 hover:text-red-500 cursor-pointer" />
-                  <FaEllipsisH className="text-gray-400 cursor-pointer" />
-                </div>
+        {songsData.slice(0, 5).map((song, index) => (
+          <div
+            key={song._id}
+            className="flex flex-row items-center justify-between py-2 px-2 hover:bg-gray-800 rounded-lg cursor-pointer"
+          >
+            <div className="flex flex-row items-center space-x-3">
+              <p className="text-gray-400">{index + 1}</p>
+              <img
+                src={`${backendUrl}/${song.imageFilePath}`}
+                alt={song.title}
+                className="w-10 h-10 rounded-lg object-cover"
+              />
+              <div>
+                <p className="font-semibold">{song.title}</p>
+                <p className="text-sm text-gray-400">{song.artist}</p>
               </div>
-            </div>;
-          })
-          .slice(0, 5)}
+            </div>
+
+            <div className="flex flex-row items-center space-x-3">
+              <FaHeart className="text-gray-400 hover:text-red-500 cursor-pointer" />
+              <FaEllipsisH className="text-gray-400 cursor-pointer" />
+            </div>
+          </div>
+        ))}
 
         <div className="mt-3">
           <div className="flex justify-between mr-2 mb-2">

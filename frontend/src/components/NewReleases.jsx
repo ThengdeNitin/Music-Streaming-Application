@@ -2,7 +2,7 @@ import { useContext, useRef, useState } from "react"
 import { FaPlay, FaPause } from 'react-icons/fa'
 import { PlayerContext } from '../context/PlayerContext'
 
-export const NewReleases = (setCurrentSongImage, setCurrentSongTitle, setCurrentSongArtist) => {
+export const NewReleases = ({ setCurrentSongImage, setCurrentSongTitle, setCurrentSongArtist }) => {
 
   const { songsData, backendUrl } = useContext(PlayerContext)
   const [playingSong, setPlayingSong] = useState(null)
@@ -12,7 +12,7 @@ export const NewReleases = (setCurrentSongImage, setCurrentSongTitle, setCurrent
   const audioRef = useRef(new Audio())
 
   const handelPlayClick = (song) => {
-    if(playingSong._id === song._id){
+    if(playingSong && playingSong._id === song._id) {
       return;
     }
 
@@ -24,15 +24,14 @@ export const NewReleases = (setCurrentSongImage, setCurrentSongTitle, setCurrent
     audioRef.current.play()
     setPlayingSong(song)
 
-    //Set the current and duration for process tracking
     audioRef.current.onloadedmetadata = () => {
       setDuration(audioRef.current.duration);
     }
-    audioRef.current.ontimeupadate = () => {
+    audioRef.current.ontimeupdate = () => {
       setDuration(audioRef.current.currentTime)
     }
 
-    const imageUrl = `${backendUrl}/${song.imageFilePath}.replace(/\\/g, '/)`
+    const imageUrl = `${backendUrl}/${song.imageFilePath.replace(/\\/g, '/')}`;
     setCurrentSongImage(imageUrl)
     setCurrentSongTitle(song.title)
     setCurrentSongArtist(song.artist)

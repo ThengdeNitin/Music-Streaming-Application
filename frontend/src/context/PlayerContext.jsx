@@ -1,37 +1,37 @@
 import { createContext, useEffect, useState } from "react";
+import axios from "axios";
 
-export const PlayerContext = createContext()
+export const PlayerContext = createContext();
 
 const PlayerContextProvider = ({ children }) => {
+  const backendUrl = "http://localhost:2000";
 
-  const backendUrl = "http://localhost:2000"
-
-  const [songsData, setSongsData] = useState([])
+  const [songsData, setSongsData] = useState([]);
 
   const fetchSongs = async () => {
     try {
-      const { data } = await axios.get(`${backendUrl}/api/admin/get-music`)
-      setSongsData( data.music)
+      const { data } = await axios.get(`${backendUrl}/api/admin/get-music`);
+      setSongsData(data.music);
     } catch (error) {
-      console.log(error)
+      console.error("Failed to fetch songs:", error);
     }
-  }
+  };
 
   useEffect(() => {
-    fetchSongs()
-  }, [])
+    fetchSongs();
+  }, []);
 
   const values = {
-     backendUrl,
-     songsData,
-     fetchSongs
-  }
+    backendUrl,
+    songsData,
+    fetchSongs,
+  };
 
-  return(
-    <PlayerContextProvider value={values}>
-      { children }
-    </PlayerContextProvider>
-  )
-}
+  return (
+    <PlayerContext.Provider value={values}>
+      {children}
+    </PlayerContext.Provider>
+  );
+};
 
 export default PlayerContextProvider;
