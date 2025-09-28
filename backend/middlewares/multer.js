@@ -2,10 +2,12 @@ import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
 
-// Ensure uploads folder exists
-const uploadDir = 'uploads';
+// Use /tmp/uploads for Vercel
+const uploadDir = '/tmp/uploads';
+
+// Ensure folder exists
 if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir);
+  fs.mkdirSync(uploadDir, { recursive: true });
 }
 
 // Storage configuration
@@ -23,31 +25,21 @@ const storage = multer.diskStorage({
 const fileFilter = (req, file, cb) => {
   const allowedAudio = ['.mp3', '.wav'];
   const allowedImage = ['.jpg', '.jpeg', '.png', '.webp'];
-
   const ext = path.extname(file.originalname).toLowerCase();
 
   if (file.fieldname === 'music') {
-    if (allowedAudio.includes(ext)) {
-      cb(null, true);
-    } else {
-      cb(new Error('Invalid audio file type. Only .mp3 or .wav allowed.'));
-    }
+    allowedAudio.includes(ext) ? cb(null, true) : cb(new Error('Invalid audio file type. Only .mp3 or .wav allowed.'));
   } else if (file.fieldname === 'image') {
-    if (allowedImage.includes(ext)) {
-      cb(null, true);
-    } else {
-      cb(new Error('Invalid image file type. Only .jpg, .jpeg, .png, .webp allowed.'));
-    }
+    allowedImage.includes(ext) ? cb(null, true) : cb(new Error('Invalid image file type. Only .jpg, .jpeg, .png, .webp allowed.'));
   } else {
     cb(new Error('Invalid field name'));
   }
 };
 
-// Export multer instance
 const upload = multer({
   storage,
   fileFilter,
-  limits: { fileSize: 20 * 1024 * 1024 } // max 20MB per file
+  limits: { fileSize: 20 * 1024 * 1024 } 
 });
 
 export default upload;
