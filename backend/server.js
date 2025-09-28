@@ -18,6 +18,13 @@ app.use('/uploads', express.static(path.join(path.resolve(), 'uploads')));
 
 app.use('/api/admin', adminRouter)
 
+app.get('/', (req, res) => {
+  res.send({
+    activateState:true,
+    error:false,
+  })
+})
+
 app.listen(PORT, () => {
   console.log(`Server connected to port ${PORT}`)
 })
