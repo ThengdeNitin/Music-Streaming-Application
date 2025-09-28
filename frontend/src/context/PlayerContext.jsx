@@ -4,14 +4,18 @@ import axios from "axios";
 export const PlayerContext = createContext();
 
 const PlayerContextProvider = ({ children }) => {
+  // ✅ Use Vite env var (comes from Vercel)
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const [songsData, setSongsData] = useState([]);
 
   const fetchSongs = async () => {
     try {
-      const { data } = await axios.get(`${backendUrl}/api/admin/get-music`);
+      const { data } = await axios.get(`${backendUrl}/api/admin/get-music`, {
+        withCredentials: true, // ✅ needed if using cookies/session
+      });
+
       if (data.success) {
-        setSongsData(data.music); 
+        setSongsData(data.music);
       }
       console.log("Fetched songs:", data);
     } catch (error) {
