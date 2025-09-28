@@ -1,5 +1,5 @@
 import logo from '../assets/play.png'
-import bird from '../assets/bird.jpg'
+import bird from '../assets/bird.png'
 import { IoIosAddCircle } from 'react-icons/io'
 import { IoMdMusicalNote } from 'react-icons/io'
 import { NavLink, Navigate, useNavigate } from 'react-router-dom'

@@ -1,5 +1,5 @@
 import logo from '../assets/play.png'
-import bird from '../assets/bird.jpg'
+import bird from '../assets/bird.png'
 import { IoMdHome } from 'react-icons/io'
 // import { BsGridiX2 } from 'react-icons/bs'
 import { CiHeart } from 'react-icons/ci'
