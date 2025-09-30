@@ -48,9 +48,6 @@ export const Display = () => {
               See all
             </p>
           </div>
-            {/* <div className="w-96 overflow-hidden mr-2">
-              <img src={banner} alt="" />
-            </div> */}
         </div>
       </div>
     </div>

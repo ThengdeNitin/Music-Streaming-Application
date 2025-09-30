@@ -1,3 +1,5 @@
 node_modules/
 .env
-.env
+/backend/server.js
+/backend/vercel.json
+frontend/src/conext/PlayerContext.js
