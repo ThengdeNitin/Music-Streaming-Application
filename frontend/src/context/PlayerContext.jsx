@@ -4,7 +4,7 @@ import axios from "axios";
 export const PlayerContext = createContext();
 
 const PlayerContextProvider = ({ children }) => {
-  const backendUrl = `http://localhost:2000`;
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const [songsData, setSongsData] = useState([]);
 
   const fetchSongs = async () => {
