@@ -32,13 +32,13 @@ function App() {
           </>
         ) : (
           <>
-          <SideBar/>
+          <SideBar/> 
           <div className="flex-1 bg-black overflow-y-scroll">
             <Header/>
           </div>
-          <div className="flex-2 bg-black hidden lg:block p-2">
+          <div className="flex-1 bg-black hidden lg:block p-2">
              <Display/>
-          </div>
+          </div> 
           </>
         )} 
       </div>

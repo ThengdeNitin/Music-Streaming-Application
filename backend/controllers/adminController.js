@@ -3,6 +3,8 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import musicModel from '../models/musicModel.js';
 import path from 'path';
+import cloudinary from "../config/cloudinary.js";
+
 
 // REGISTER
 const register = async (req, res) => {
@@ -92,7 +94,6 @@ const login = async (req, res) => {
   }
 };
 
-// UPLOAD MUSIC
 const uploadMusic = async (req, res) => {
   try {
     const { title, artist } = req.body;
@@ -104,33 +105,41 @@ const uploadMusic = async (req, res) => {
     const musicFile = req.files.music?.[0];
     const imageFile = req.files.image?.[0];
 
-    if (!musicFile) return res.status(400).json({ success: false, message: "Music file is required" });
-    if (!imageFile) return res.status(400).json({ success: false, message: "Image file is required" });
-
-    const allowedMusicExtensions = ['.mp3', '.wav'];
-    const allowedImageExtensions = ['.jpg', '.jpeg', '.png', '.webp'];
-
-    const musicExt = path.extname(musicFile.originalname).toLowerCase();
-    const imageExt = path.extname(imageFile.originalname).toLowerCase();
-
-    if (!allowedMusicExtensions.includes(musicExt)) {
-      return res.status(400).json({ success: false, message: "Invalid music file type" });
+    if (!musicFile || !imageFile) {
+      return res.status(400).json({ success: false, message: "Music and Image files are required" });
     }
 
-    if (!allowedImageExtensions.includes(imageExt)) {
-      return res.status(400).json({ success: false, message: "Invalid image file type" });
-    }
+    // Upload music to Cloudinary
+    const uploadedMusic = await cloudinary.uploader.upload_stream(
+      { resource_type: 'video', folder: 'music' }, 
+      async (error, result) => {
+        if (error) return res.status(500).json({ success: false, message: error.message });
 
-    const music = new musicModel({
-      title,
-      artist,
-      filePath: musicFile.path,
-      imageFilePath: imageFile.path
-    });
+        // Upload image to Cloudinary
+        const uploadedImage = await cloudinary.uploader.upload_stream(
+          { folder: 'music_streaming_app' },
+          async (errorImg, resultImg) => {
+            if (errorImg) return res.status(500).json({ success: false, message: errorImg.message });
 
-    await music.save();
+            // Save record in MongoDB
+            const music = new musicModel({
+              title,
+              artist,
+              filePath: result.secure_url,
+              imageFilePath: resultImg.secure_url
+            });
 
-    return res.status(201).json({ success: true, message: "Music uploaded successfully", music });
+            await music.save();
+            res.status(201).json({ success: true, message: "Music uploaded successfully", music });
+          }
+        );
+
+        uploadedImage.end(imageFile.buffer);
+      }
+    );
+
+    uploadedMusic.end(musicFile.buffer);
+
   } catch (error) {
     console.log(error);
     return res.status(500).json({ success: false, message: "Internal server error" });
@@ -141,16 +150,13 @@ const uploadMusic = async (req, res) => {
 const getMusic = async (req, res) => {
   try {
     const musics = await musicModel.find();
-    if (!musics || musics.length === 0) {
-      return res.status(404).json({ success: false, message: "No songs found" });
-    }
-
     res.status(200).json({ success: true, music: musics });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
+
 
 // DELETE MUSIC
 const deleteMusic = async (req, res) => {

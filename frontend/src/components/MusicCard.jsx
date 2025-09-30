@@ -8,56 +8,62 @@ import { toast } from "react-toastify";
 const MusicCard = ({ music, fetchSongs }) => {
   const { backendUrl } = useContext(PlayerContext);
 
-  const audioSrc = `${backendUrl}/${music.filePath.replace(/\\/g, '/')}`;
-  const imageSrc = `${backendUrl}/${music.imageFilePath.replace(/\\/g, '/')}`;  
+  // Prefer Cloudinary URLs if available
+  const audioSrc = music.musicUrl || music.filePath || "";
+  const imageSrc = music.imageUrl || music.imageFilePath || "";
 
   const handleDelete = async (id) => {
     try {
-      const { data } = await axios.delete(
-        `${backendUrl}/api/admin/delete-music/${id}`
-      );
+      const { data } = await axios.delete(`${backendUrl}/api/admin/delete-music/${id}`);
       if (data.success) {
         toast.success(data.message);
         fetchSongs();
-        console.log(data);
-        // window.location.reload();
       }
     } catch (error) {
-      console.error(error);
+      console.error("Delete failed:", error);
       toast.error("Failed to delete music");
     }
   };
 
   return (
-    <div className="bg-gradient-to-b from-black to-gray-400 text-white rounded-lg shadow-lg overflow-hidden transition-transform transform relative">
-      <img
-        src={imageSrc}
-        alt={music.title}
-        className="w-full h-40 object-cover object-top hover:scale-105 transition-all duration-300"
-      />
+    <div className="bg-gradient-to-b from-gray-900 to-gray-800 text-white rounded-2xl shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 overflow-hidden relative">
+      {/* Song Image */}
+      <div className="relative group">
+        <img
+          src={imageSrc}
+          alt={music.title}
+          className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110"
+          onError={(e) => (e.target.src = "/fallback-image.jpg")} // fallback if broken
+        />
+        {/* Delete button */}
+        <button
+          onClick={() => handleDelete(music._id)}
+          className="absolute top-3 right-3 bg-red-600 hover:bg-red-700 p-2 rounded-full shadow-md transition-all duration-300"
+        >
+          <MdDelete className="text-white text-lg" />
+        </button>
+      </div>
+
+      {/* Song Info */}
       <div className="p-4">
-        <div className="flex justify-between items-center">
-          <h3 className="text-lg font-semibold truncate">{music.title}</h3>
-          <MdDelete
-            onClick={() => handleDelete(music._id)}
-            className="text-xl cursor-pointer hover:text-red-500 absolute top-4 right-4 transition-all"
-          />
+        <h3 className="text-lg font-bold truncate">{music.title}</h3>
+        <div className="flex items-center gap-2 mt-1 text-gray-300">
+          <IoIosMicrophone className="text-xl" />
+          <span className="truncate">{music.artist}</span>
         </div>
-        <div className="flex items-center justify-start gap-2 mt-2">
-          <IoIosMicrophone />
-          <span>{music.artist}</span>
-        </div>
-        <p className="text-sm mt-2">
-          <span className="text-white text-xs">Uploaded At: </span>
-          {music.createdAt ? new Date(music.createdAt).toLocaleString() : "N/A"}
-        </p>
-        <audio controls className="w-full mt-3">
-          <source src={audioSrc} type="audio/mpeg" />
-          Your browser does not support the audio element.
-        </audio>
+
+        {/* Audio Player */}
+        {audioSrc && (
+          <div className="mt-4 bg-gray-700 rounded-lg overflow-hidden">
+            <audio controls className="w-full">
+              <source src={audioSrc} type="audio/mpeg" />
+              Your browser does not support the audio element.
+            </audio>
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
-export default MusicCard
+export default MusicCard;
