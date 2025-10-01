@@ -39,13 +39,21 @@ export const SideBarAdmin = () => {
           <p>Add Music</p>
         </NavLink>
 
-        <div
+        <NavLink
+          to={"/list-songs"}
+          className="flex items-center gap-2 sm:gap-3 text-white text-xs sm:text-sm md:text-base font-medium rounded-xl cursor-pointer hover:bg-gray-700 py-2 px-3 sm:py-3 sm:px-4 w-full"
+        >
+          <IoIosAddCircle className="w-6 h-6 sm:w-8 sm:h-8" />
+          <p>list-songs</p>
+        </NavLink>
+
+        {/* <div
           onClick={handleClick}
           className="flex items-center gap-2 sm:gap-3 text-white text-xs sm:text-sm md:text-base font-medium rounded-xl cursor-pointer hover:bg-gray-700 py-2 px-3 sm:py-3 sm:px-4 w-full"
         >
           <IoMdMusicalNote className="w-6 h-6 sm:w-8 sm:h-8" />
           <p>List Of Songs</p>
-        </div>
+        </div> */}
       </div>
     </div>
   );
