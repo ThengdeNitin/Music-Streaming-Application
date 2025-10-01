@@ -56,21 +56,21 @@ export const NewReleases = ({
   };
 
   return (
-    <div className="mt-50 py-2 px-2 mb-16">
+    <div className="mt-12 py-2 px-2 mb-16">
       <div className="flex justify-between items-center text-white">
-        <p className="text-sm text-red-500 hover:text-white cursor-pointer">
+        <p className="text-sm sm:text-base text-red-500 hover:text-white cursor-pointer">
           See More
         </p>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 mt-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
         {songsData.map((song) => (
           <div key={song._id} className="relative group">
             <div className="relative">
               <img
-                src={song.imageFilePath}
+                src={song.imageFilePath || "/fallback-image.jpg"}
                 alt={song.title}
-                className="w-full h-40 object-cover object-top rounded-lg"
+                className="w-full h-40 sm:h-48 md:h-56 lg:h-60 object-cover object-top rounded-lg"
               />
               <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg">
                 <button
@@ -91,21 +91,19 @@ export const NewReleases = ({
             </div>
 
             <div className="mt-2 flex justify-between items-center">
-              <div>
-                <p className="text-white font-semibold truncate">
-                  {song.title}
+              <div className="truncate">
+                <p className="text-white font-semibold truncate">{song.title}</p>
+                <p className="text-gray-400 text-sm sm:text-base truncate">
+                  {song.artist}
                 </p>
-                <p className="text-gray-400 text-sm truncate">{song.artist}</p>
               </div>
-              <h1 className="font-sm text-gray-500">
-                New Release
-              </h1>
+              <h1 className="text-xs sm:text-sm text-gray-500">New Release</h1>
             </div>
 
             {playingSong && playingSong._id === song._id && (
               <>
                 <div className="w-full flex items-center justify-between mt-2">
-                  <label htmlFor="volume" className="text-white text-sm">
+                  <label htmlFor="volume" className="text-white text-sm sm:text-base">
                     Volume
                   </label>
                   <input
@@ -115,7 +113,7 @@ export const NewReleases = ({
                     min="0"
                     max="10"
                     defaultValue="10"
-                    className="w-20"
+                    className="w-16 sm:w-20"
                   />
                 </div>
 

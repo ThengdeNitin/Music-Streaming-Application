@@ -5,6 +5,7 @@ export const PlayerContext = createContext();
 
 const PlayerContextProvider = ({ children }) => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  // const backendUrl = `http://localhost:2000`;
   const [songsData, setSongsData] = useState([]);
 
   const fetchSongs = async () => {

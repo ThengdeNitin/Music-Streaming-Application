@@ -2,40 +2,48 @@ import logo from "../assets/play.png";
 import { IoIosAddCircle } from "react-icons/io";
 import { IoMdMusicalNote } from "react-icons/io";
 import { IoMdHome } from "react-icons/io";
-import { NavLink, Navigate, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 export const SideBarAdmin = () => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate("/list-songs");   
-    window.location.reload();  
+    navigate("/list-songs");
+    window.location.reload();
   };
 
   return (
-    <div className="bg-gradient-to-t from-black to-gray-500 min-h-screen space-x-16 p-[1vw] items-center flex flex-col">
-      <img src={logo} className="mt-1 w-44 hidden md:block cursor-pointer" />
+    <div className="bg-gradient-to-t from-black to-gray-500 max-h-screen p-2 sm:p-4 flex flex-col items-center">
+      {/* Logo */}
+      <img
+        src={logo}
+        className="mt-2 w-28 sm:w-36 md:w-44 cursor-pointer"
+        alt="Logo"
+      />
 
-      <div className="flex flex-col items-center gap-5 mt-10 py-2 px-2">
+      {/* Navigation */}
+      <div className="flex flex-col items-center gap-3 sm:gap-5 mt-6 sm:mt-10 w-full">
         <NavLink
           to={"/"}
-          className="flex items-center gap-2 text-white text-sm font-medium rounded-xl cursor-pointer hover:bg-gray-700 py-3 px-3"
+          className="flex items-center gap-2 sm:gap-3 text-white text-xs sm:text-sm md:text-base font-medium rounded-xl cursor-pointer hover:bg-gray-700 py-2 px-3 sm:py-3 sm:px-4 w-full"
         >
-          <IoMdHome className="w-12 h-12 text-xl font-medium" />
+          <IoMdHome className="w-6 h-6 sm:w-8 sm:h-8" />
           <p>Home</p>
         </NavLink>
+
         <NavLink
           to={"/add-music"}
-          className="flex items-center gap-2 text-white text-sm font-medium rounded-xl cursor-pointer hover:bg-gray-700 py-3 px-3"
+          className="flex items-center gap-2 sm:gap-3 text-white text-xs sm:text-sm md:text-base font-medium rounded-xl cursor-pointer hover:bg-gray-700 py-2 px-3 sm:py-3 sm:px-4 w-full"
         >
-          <IoIosAddCircle className="w-12 h-12 text-xl font-medium" />
+          <IoIosAddCircle className="w-6 h-6 sm:w-8 sm:h-8" />
           <p>Add Music</p>
         </NavLink>
+
         <div
           onClick={handleClick}
-          className="flex items-center gap-2 text-white text-sm font-medium rounded-xl cursor-pointer hover:bg-gray-700 py-3 px-3"
+          className="flex items-center gap-2 sm:gap-3 text-white text-xs sm:text-sm md:text-base font-medium rounded-xl cursor-pointer hover:bg-gray-700 py-2 px-3 sm:py-3 sm:px-4 w-full"
         >
-          <IoMdMusicalNote className="w-12 h-12 text-xl font-medium" />
+          <IoMdMusicalNote className="w-6 h-6 sm:w-8 sm:h-8" />
           <p>List Of Songs</p>
         </div>
       </div>
