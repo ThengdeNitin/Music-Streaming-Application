@@ -6,7 +6,6 @@ import { NavLink, useNavigate } from "react-router-dom";
 
 export const SideBarAdmin = () => {
   const navigate = useNavigate();
-  window.location.reload();
 
   return (
     <div className="bg-gradient-to-t from-black to-gray-500 max-h-screen p-2 sm:p-4 flex flex-col items-center">
