@@ -59,19 +59,21 @@ const UploadSongs = () => {
   };
 
   return (
-    <div className="max-h-screen flex items-center justify-center px-2 sm:px-4">
+    <div className="min-h-screen flex items-center justify-center px-3 sm:px-6 py-8 bg-gray-50">
       <form
         onSubmit={onSubmitHandler}
-        className="flex flex-col gap-6 w-full max-w-xl p-4 sm:p-6 md:p-8 shadow-lg rounded-xl shadow-black text-gray-600"
+        className="flex flex-col gap-6 w-full max-w-md sm:max-w-xl md:max-w-2xl p-5 sm:p-8 md:p-10 bg-white shadow-lg rounded-2xl text-gray-700"
       >
-        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-4">
-          Upload Songs
+        {/* Title */}
+        <h2 className="text-lg sm:text-2xl md:text-3xl font-extrabold text-center">
+          Upload Your Music 🎵
         </h2>
 
-        <div className="flex flex-col sm:flex-row sm:items-start gap-4">
+        {/* Upload Section */}
+        <div className="flex flex-col sm:flex-row items-center sm:items-start justify-center gap-6">
           {/* Song Upload */}
-          <div className="flex flex-col items-center gap-2 w-full sm:w-1/2">
-            <p className="text-sm sm:text-base">Upload Song</p>
+          <div className="flex flex-col items-center gap-3 w-full sm:w-1/2">
+            <p className="text-sm sm:text-base font-medium">Upload Song</p>
             <input
               type="file"
               id="song"
@@ -86,15 +88,15 @@ const UploadSongs = () => {
             <label htmlFor="song">
               <img
                 src={songPreview || assets.upload_song}
-                className="w-24 h-24 sm:w-32 sm:h-32 cursor-pointer object-contain"
+                className="w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 cursor-pointer object-contain border-2 border-dashed border-gray-300 rounded-lg hover:border-gray-500 transition"
                 alt="Upload Song"
               />
             </label>
           </div>
 
           {/* Image Upload */}
-          <div className="flex flex-col items-center gap-2 w-full sm:w-1/2">
-            <p className="text-sm sm:text-base">Upload Image</p>
+          <div className="flex flex-col items-center gap-3 w-full sm:w-1/2">
+            <p className="text-sm sm:text-base font-medium">Upload Image</p>
             <input
               type="file"
               id="image"
@@ -109,8 +111,8 @@ const UploadSongs = () => {
             <label htmlFor="image">
               <img
                 src={imagePreview || assets.upload_area}
-                className="w-24 h-24 sm:w-32 sm:h-32 cursor-pointer object-contain"
-                alt="Upload Image"
+                className="w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 cursor-pointer object-cover border-2 border-dashed border-gray-300 rounded-lg hover:border-gray-500 transition"
+                alt="Upload Cover"
               />
             </label>
           </div>
@@ -123,8 +125,8 @@ const UploadSongs = () => {
             name="title"
             value={songsData.title}
             onChange={onChangeHandler}
-            placeholder="Song Name"
-            className="w-full p-2.5 rounded-lg outline-none bg-gray-100"
+            placeholder="Song Title"
+            className="flex-1 p-3 rounded-lg outline-none bg-gray-100 focus:ring-2 focus:ring-black"
             required
           />
           <input
@@ -133,16 +135,17 @@ const UploadSongs = () => {
             value={songsData.artist}
             onChange={onChangeHandler}
             placeholder="Artist Name"
-            className="w-full p-2.5 rounded-lg outline-none bg-gray-100"
+            className="flex-1 p-3 rounded-lg outline-none bg-gray-100 focus:ring-2 focus:ring-black"
             required
           />
         </div>
 
+        {/* Submit Button */}
         <button
           type="submit"
-          className="bg-black text-white py-2 px-6 md:py-3 md:px-8 rounded-lg shadow-lg hover:bg-gray-800 text-sm sm:text-base"
+          className="bg-black text-white py-2.5 px-6 md:py-3 md:px-10 rounded-lg shadow-md hover:bg-gray-800 transition text-sm sm:text-base font-medium"
         >
-          Add
+          Add Song
         </button>
       </form>
     </div>

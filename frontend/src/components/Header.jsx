@@ -8,7 +8,20 @@ const Header = () => {
 
   return (
     <header
-      className="relative bg-cover bg-no-repeat bg-top h-64 sm:h-80 md:h-96 flex items-center justify-center text-white"
+      className="
+        relative 
+        bg-cover 
+        bg-no-repeat 
+        bg-center 
+        h-56 
+        sm:h-72 
+        md:h-96 
+        lg:h-[28rem] 
+        flex 
+        items-center 
+        justify-center 
+        text-white
+      "
       style={{
         backgroundImage: `url(${
           currentSongImage ||
@@ -16,16 +29,45 @@ const Header = () => {
         })`,
       }}
     >
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-black bg-opacity-40"></div>
+      <div className="absolute inset-0 bg-black/50"></div>
 
-      {/* Song Info */}
       {currentSongTitle && currentSongArtist && (
-        <div className="absolute text-center px-4 sm:px-8">
-          <p className="text-xl sm:text-3xl md:text-5xl lg:text-6xl font-bold mb-2 drop-shadow-lg truncate">
+        <div
+          className="
+            absolute 
+            text-center 
+            max-w-[70%] 
+            sm:max-w-[70%] 
+            lg:max-w-[50%] 
+            px-3 sm:px-6
+          "
+        >
+          <p
+            className="
+              text-lg 
+              sm:text-2xl 
+              md:text-4xl 
+              lg:text-5xl 
+              font-extrabold 
+              mb-1 sm:mb-2 
+              drop-shadow-lg 
+              truncate
+            "
+          >
             {currentSongTitle}
           </p>
-          <p className="text-sm sm:text-lg md:text-xl text-gray-300 font-medium drop-shadow-lg truncate">
+          <p
+            className="
+              text-xs 
+              sm:text-base 
+              md:text-lg 
+              lg:text-xl 
+              text-gray-300 
+              font-medium 
+              drop-shadow-md 
+              truncate
+            "
+          >
             {currentSongArtist}
           </p>
         </div>

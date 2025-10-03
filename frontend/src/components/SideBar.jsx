@@ -1,12 +1,11 @@
 import logo from "../assets/play.png";
 import { IoMdHome } from "react-icons/io";
-import { Link, useNavigate } from "react-router-dom";
+import { IoIosAddCircle } from "react-icons/io";
+import { NavLink } from "react-router-dom";
 
 export const SideBar = () => {
-  const navigate = useNavigate();
-
   return (
-    <div className="bg-gradient-to-l from-black to-gray-700 max-h-screen p-2 sm:p-4 flex flex-col items-center">
+    <div className="bg-gradient-to-l from-black to-gray-700 p-2 flex flex-col items-center">
       {/* Logo */}
       <div className="w-full flex justify-center mt-2 sm:mt-3">
         <img
@@ -16,29 +15,31 @@ export const SideBar = () => {
         />
       </div>
 
-      {/* Home Button */}
-      <div className="flex flex-row items-center justify-center gap-2 sm:gap-5 py-2 w-full mt-4">
-        <div
-          className="bg-blue-600 w-full flex flex-row items-center justify-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-3 rounded-lg cursor-pointer"
-          onClick={() => navigate("/")}
+      <div className="flex flex-col items-center gap-3 sm:gap-5 mt-6 sm:mt-10 w-full">
+        
+        {/* Home */}
+        <NavLink
+          to="/"
+          className={({ isActive }) =>
+            `flex items-center gap-2 sm:gap-3 text-white text-xs sm:text-sm md:text-base font-medium rounded-xl cursor-pointer py-2 px-3 sm:py-3 sm:px-4 w-full
+            ${isActive ? "bg-blue-600" : "hover:bg-gray-700"}`
+          }
         >
-          <IoMdHome className="text-xl sm:text-2xl text-white" />
-          <p className="text-sm sm:text-lg font-semibold text-white hidden sm:block">
-            Home
-          </p>
-        </div>
-      </div>
+          <IoMdHome className="w-6 h-6 sm:w-8 sm:h-8" />
+          <p className="sm:block">Home</p>
+        </NavLink>
 
-      {/* Upload Songs Button */}
-      <div className="flex flex-row items-center justify-center gap-2 sm:gap-5 py-2 w-full">
-        <Link
+        {/* Upload Songs */}
+        <NavLink
           to="/add-music"
-          className="bg-blue-600 w-full flex flex-row items-center justify-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-3 rounded-lg cursor-pointer"
+          className={({ isActive }) =>
+            `flex items-center gap-2 sm:gap-3 text-white text-xs sm:text-sm md:text-base font-medium rounded-xl cursor-pointer py-2 px-3 sm:py-3 sm:px-4 w-full
+            ${isActive ? "bg-blue-600" : "hover:bg-gray-700"}`
+          }
         >
-          <p className="text-sm sm:text-lg font-semibold text-white hidden sm:block">
-            Upload Songs
-          </p>
-        </Link>
+          <IoIosAddCircle className="w-6 h-6 sm:w-8 sm:h-8" />
+          <p className="sm:block">Upload Songs</p>
+        </NavLink>
       </div>
     </div>
   );
