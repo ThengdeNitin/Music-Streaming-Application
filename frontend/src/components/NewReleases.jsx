@@ -65,93 +65,90 @@ export const NewReleases = ({
   };
 
   return (
-    <div className="mt-12 py-2 px-2 mb-16">
-      <div className="flex justify-between items-center text-white">
-        <p className="text-sm sm:text-base text-red-500 hover:text-white cursor-pointer h-full">
+    <div className="mt-6 sm:mt-12 py-2 px-4 sm:px-6 mb-8">
+    <div className="flex justify-between items-center text-white">
+      <p className="text-sm sm:text-base text-red-500 hover:text-white cursor-pointer">
         New Release
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 mt-4 ml-2">
-        {songsData.map((song) => (
-          <div key={song._id} className="relative group">
-            <div className="relative">
-              <img
-                src={song.imageFilePath || fallbackImage}
-                alt={song.title}
-                className="w-full h-40 sm:h-48 md:h-56 lg:h-60 xl:h-64 object-cover object-top rounded-lg"
-                onError={(e) => (e.target.src = fallbackImage)}
-              />
-              {/* Overlay Play/Pause Button */}
-              <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg">
-                <button
-                  aria-label={
-                    playingSong && playingSong._id === song._id
-                      ? "Pause Song"
-                      : "Play Song"
-                  }
-                  className="bg-red-500 p-3 rounded-full text-white hover:bg-red-600 transition-all duration-300"
-                  onClick={() =>
-                    playingSong && playingSong._id === song._id
-                      ? handlePauseClick()
-                      : handlePlayClick(song)
-                  }
-                >
-                  {playingSong && playingSong._id === song._id ? (
-                    <FaPause />
-                  ) : (
-                    <FaPlay />
-                  )}
-                </button>
-              </div>
-            </div>
-
-            {/* Song Info */}
-            <div className="mt-2 flex justify-between items-center">
-              <div className="truncate">
-                <p className="text-white font-semibold truncate">{song.title}</p>
-                <p className="text-gray-400 text-sm sm:text-base truncate">
-                  {song.artist}
-                </p>
-              </div>
-            </div>
-
-            {/* Active Player Controls */}
-            {playingSong && playingSong._id === song._id && (
-              <>
-                <div className="w-full flex items-center justify-between mt-2">
-                  <label
-                    htmlFor="volume"
-                    className="text-white text-sm sm:text-base"
-                  >
-                    Volume
-                  </label>
-                  <input
-                    id="volume"
-                    type="range"
-                    onChange={handleVolumeChange}
-                    min="0"
-                    max="10"
-                    defaultValue="10"
-                    className="w-20 sm:w-28 cursor-pointer"
-                  />
-                </div>
-
-                {/* Progress Bar */}
-                <div
-                  className="w-full mt-2 h-1 cursor-pointer rounded bg-gray-600"
-                  onClick={handleProgressClick}
-                >
-                  <div
-                    className="h-1 rounded bg-red-500"
-                    style={{ width: `${(currentTime / duration) * 100}%` }}
-                  />
-                </div>
-              </>
-            )}
-          </div>
-        ))}
-      </div>
+      </p>
     </div>
+  
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6 mt-40 sm:mt-[45px] md:mt-[30px] lg:mt-[20px] xl:mt-[10px]">
+      {songsData.map((song) => (
+        <div key={song._id} className="relative group">
+          <div className="relative">
+            <img
+              src={song.imageFilePath || fallbackImage}
+              alt={song.title}
+              className="w-full h-40 sm:h-48 md:h-56 lg:h-60 xl:h-64 object-cover object-top rounded-lg"
+              onError={(e) => (e.target.src = fallbackImage)}
+            />
+            <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg">
+              <button
+                aria-label={
+                  playingSong && playingSong._id === song._id
+                    ? "Pause Song"
+                    : "Play Song"
+                }
+                className="bg-red-500 p-3 rounded-full text-white hover:bg-red-600 transition-all duration-300"
+                onClick={() =>
+                  playingSong && playingSong._id === song._id
+                    ? handlePauseClick()
+                    : handlePlayClick(song)
+                }
+              >
+                {playingSong && playingSong._id === song._id ? (
+                  <FaPause />
+                ) : (
+                  <FaPlay />
+                )}
+              </button>
+            </div>
+          </div>
+  
+          <div className="mt-2 flex justify-between items-center">
+            <div className="truncate">
+              <p className="text-white font-semibold truncate">{song.title}</p>
+              <p className="text-gray-400 text-sm sm:text-base truncate">
+                {song.artist}
+              </p>
+            </div>
+          </div>
+  
+          {playingSong && playingSong._id === song._id && (
+            <>
+              <div className="w-full flex items-center justify-between mt-2">
+                <label
+                  htmlFor="volume"
+                  className="text-white text-sm sm:text-base"
+                >
+                  Volume
+                </label>
+                <input
+                  id="volume"
+                  type="range"
+                  onChange={handleVolumeChange}
+                  min="0"
+                  max="10"
+                  defaultValue="10"
+                  className="w-20 sm:w-28 cursor-pointer"
+                />
+              </div>
+  
+              <div
+                className="w-full mt-2 h-1 cursor-pointer rounded bg-gray-600"
+                onClick={handleProgressClick}
+              >
+                <div
+                  className="h-1 rounded bg-red-500"
+                  style={{ width: `${(currentTime / duration) * 100}%` }}
+                />
+              </div>
+            </>
+          )}
+        </div>
+      ))}
+    </div>
+  </div>
+  
   );
 };
