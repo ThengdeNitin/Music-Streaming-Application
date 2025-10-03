@@ -21,6 +21,7 @@ app.use(
   })
 );
 
+
 app.use(express.json());
 app.use("/uploads", express.static(path.join(path.resolve(), "uploads")));
 app.use("/api/admin", adminRouter);
