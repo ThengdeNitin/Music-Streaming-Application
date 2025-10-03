@@ -13,7 +13,6 @@ const Header = () => {
         bg-cover 
         bg-no-repeat 
         bg-center 
-        h-56 
         sm:h-72 
         md:h-96 
         lg:h-[28rem] 
@@ -21,6 +20,7 @@ const Header = () => {
         items-center 
         justify-center 
         text-white
+        h-full
       "
       style={{
         backgroundImage: `url(${

@@ -59,7 +59,7 @@ const UploadSongs = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-3 sm:px-6 py-8 bg-gray-50">
+    <div className="h-full flex items-center justify-center px-3 sm:px-6 py-8 bg-gray-50">
       <form
         onSubmit={onSubmitHandler}
         className="flex flex-col gap-6 w-full max-w-md sm:max-w-xl md:max-w-2xl p-5 sm:p-8 md:p-10 bg-white shadow-lg rounded-2xl text-gray-700"

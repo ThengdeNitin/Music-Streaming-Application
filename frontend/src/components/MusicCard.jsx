@@ -31,7 +31,7 @@ const MusicCard = ({ music, fetchSongs }) => {
   };
 
   return (
-    <div className="bg-gradient-to-b from-gray-900 to-gray-800 text-white rounded-2xl shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 overflow-hidden relative w-full">
+    <div className="bg-gradient-to-b from-gray-900 to-gray-800 text-white rounded-2xl shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 overflow-hidden relative w-full h-full">
       {/* Song Image */}
       <div className="relative group">
         <img

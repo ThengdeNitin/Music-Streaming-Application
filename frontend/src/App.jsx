@@ -17,7 +17,6 @@ function App() {
     <>
       <ToastContainer />
       <div className="flex flex-col sm:flex-row h-screen">
-        {/* Sidebar / Topbar */}
         {isAdminPage ? (
           <SideBarAdmin />
         ) : (
@@ -25,7 +24,7 @@ function App() {
         )}
 
         {/* Main Content */}
-        <div className="flex-1 flex flex-col sm:flex-row">
+        <div className="flex-1 flex flex-col sm:flex-column">
           {isAdminPage ? (
             <div className="flex-1 overflow-y-auto p-2">
               <Routes>

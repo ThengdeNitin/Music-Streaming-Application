@@ -11,7 +11,7 @@ export const SideBarAdmin = () => {
   return (
     <>
       {/* Mobile Header with Hamburger */}
-      <div className="sm:hidden flex items-center justify-between bg-black px-4 py-3 shadow-md">
+      <div className="sm:hidden flex items-center justify-between bg-black px-4 py-3 shadow-md h-full">
         <img src={logo} alt="Logo" className="w-20 cursor-pointer" />
         <button onClick={() => setIsOpen(!isOpen)} className="text-white text-2xl">
           {isOpen ? <FaTimes /> : <FaBars />}

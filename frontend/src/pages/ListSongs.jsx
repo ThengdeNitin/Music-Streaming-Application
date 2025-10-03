@@ -6,7 +6,7 @@ const ListSong = () => {
   const { songsData, fetchSongs } = useContext(PlayerContext);
 
   return (
-    <div className="px-3 sm:px-6 md:px-10 lg:px-16 py-6">
+    <div className="px-3 sm:px-6 md:px-10 lg:px-16 py-6 h-full">
       {/* Page Title */}
       <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-center mb-6 sm:mb-10">
         🎶 Music Library

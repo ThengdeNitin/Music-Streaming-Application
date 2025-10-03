@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 
 export const SideBar = () => {
   return (
-    <div className="bg-gradient-to-l from-black to-gray-700 p-2 flex flex-col items-center">
+    <div className="bg-gradient-to-l from-black to-gray-700 p-2 flex flex-col items-center h-full">
       {/* Logo */}
       <div className="w-full flex justify-center mt-2 sm:mt-3">
         <img

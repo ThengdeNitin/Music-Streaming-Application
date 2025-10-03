@@ -67,7 +67,7 @@ export const NewReleases = ({
   return (
     <div className="mt-12 py-2 px-2 mb-16">
       <div className="flex justify-between items-center text-white">
-        <p className="text-sm sm:text-base text-red-500 hover:text-white cursor-pointer">
+        <p className="text-sm sm:text-base text-red-500 hover:text-white cursor-pointer h-full">
         New Release
         </p>
       </div>
