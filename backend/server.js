@@ -12,7 +12,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 const allowedOrigins = [
-  process.env.FRONTEND_URL,
+  "https://music-streaming-application-fronten.vercel.app",
   "http://localhost:5173"
 ];
 
