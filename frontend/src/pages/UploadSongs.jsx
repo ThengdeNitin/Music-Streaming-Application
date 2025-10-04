@@ -31,7 +31,7 @@ const UploadSongs = () => {
       formData.append("image", image);
 
       const { data } = await axios.post(
-        `${backendUrl}/add-music`,
+        `${backendUrl}/api/admin/add-music`,
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
@@ -64,14 +64,11 @@ const UploadSongs = () => {
         onSubmit={onSubmitHandler}
         className="flex flex-col gap-6 w-full max-w-md sm:max-w-xl md:max-w-2xl p-5 sm:p-8 md:p-10 bg-white shadow-lg rounded-2xl text-gray-700"
       >
-        {/* Title */}
         <h2 className="text-lg sm:text-2xl md:text-3xl font-extrabold text-center">
           Upload Your Music 🎵
         </h2>
 
-        {/* Upload Section */}
         <div className="flex flex-col sm:flex-row items-center sm:items-start justify-center gap-6">
-          {/* Song Upload */}
           <div className="flex flex-col items-center gap-3 w-full sm:w-1/2">
             <p className="text-sm sm:text-base font-medium">Upload Song</p>
             <input
