@@ -12,18 +12,17 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 const allowedOrigins = [
-  process.env.VITE_FRONTEND_URL,     // Deployed frontend
+  process.env.FRONTEND_URL,     
   "http://localhost:5173"
 ];
 
 app.use(
   cors({
     origin: function (origin, callback) {
-      // Allow requests with no origin (like Postman) or listed origins
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
-        console.error("🚫 Blocked by CORS:", origin);
+        console.error("Blocked by CORS:", origin);
         callback(new Error("Not allowed by CORS"));
       }
     },
@@ -44,6 +43,5 @@ app.get("/", (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`✅ Server running on port ${PORT}`);
-  console.log(`🌍 Allowed origins:`, allowedOrigins);
+  console.log(`Server running on port ${PORT}`);
 });
