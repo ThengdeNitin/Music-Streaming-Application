@@ -5,8 +5,6 @@ import musicModel from '../models/musicModel.js';
 import path from 'path';
 import cloudinary from "../config/cloudinary.js";
 
-
-// REGISTER
 const register = async (req, res) => {
   try {
     const { username, email, password } = req.body;
@@ -53,7 +51,6 @@ const register = async (req, res) => {
   }
 };
 
-// LOGIN
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -109,19 +106,16 @@ const uploadMusic = async (req, res) => {
       return res.status(400).json({ success: false, message: "Music and Image files are required" });
     }
 
-    // Upload music to Cloudinary
     const uploadedMusic = await cloudinary.uploader.upload_stream(
       { resource_type: 'video', folder: 'music' }, 
       async (error, result) => {
         if (error) return res.status(500).json({ success: false, message: error.message });
 
-        // Upload image to Cloudinary
         const uploadedImage = await cloudinary.uploader.upload_stream(
           { folder: 'music_streaming_app' },
           async (errorImg, resultImg) => {
             if (errorImg) return res.status(500).json({ success: false, message: errorImg.message });
 
-            // Save record in MongoDB
             const music = new musicModel({
               title,
               artist,
@@ -146,7 +140,6 @@ const uploadMusic = async (req, res) => {
   }
 };
 
-// GET ALL MUSIC
 const getMusic = async (req, res) => {
   try {
     const musics = await musicModel.find();
@@ -158,7 +151,6 @@ const getMusic = async (req, res) => {
 };
 
 
-// DELETE MUSIC
 const deleteMusic = async (req, res) => {
   try {
     const { id } = req.params;
