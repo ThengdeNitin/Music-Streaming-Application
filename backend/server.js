@@ -11,16 +11,24 @@ connectDB();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const allowedOrigin = process.env.FRONTEND_URL || "*";
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  "http://localhost:5173"
+];
 
 app.use(
   cors({
-    origin: allowedOrigin, 
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   })
 );
-
 
 app.use(express.json());
 app.use("/uploads", express.static(path.join(path.resolve(), "uploads")));
