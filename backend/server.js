@@ -12,7 +12,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 const allowedOrigins = [
-  process.env.FRONTEND_URL,     // Deployed frontend
+  process.env.VITE_FRONTEND_URL,     // Deployed frontend
   "http://localhost:5173"
 ];
 
