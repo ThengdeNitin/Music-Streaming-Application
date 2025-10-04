@@ -9,39 +9,48 @@ const UploadSongs = () => {
   const { backendUrl } = useContext(PlayerContext);
   const navigate = useNavigate();
 
-  const [image, setImage] = useState(null);
-  const [song, setSong] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
-  const [songPreview, setSongPreview] = useState(null);
   const [songsData, setSongsData] = useState({ title: "", artist: "" });
+  const [songBase64, setSongBase64] = useState("");
+  const [imageBase64, setImageBase64] = useState("");
+  const [songPreview, setSongPreview] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+
+  const convertToBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
 
-    if (!song || !image) {
+    if (!songBase64 || !imageBase64) {
       toast.error("Please upload both song and image!");
       return;
     }
 
     try {
-      const formData = new FormData();
-      formData.append("title", songsData.title);
-      formData.append("artist", songsData.artist);
-      formData.append("music", song);
-      formData.append("image", image);
+      const payload = {
+        title: songsData.title,
+        artist: songsData.artist,
+        music: songBase64,
+        image: imageBase64,
+      };
 
-      const { data } = await axios.post(
-        `${backendUrl}/api/admin/add-music`,
-        formData,
-        { headers: { "Content-Type": "multipart/form-data" } }
-      );
+      const { data } = await axios.post(`${backendUrl}/api/admin/add-music`, payload, {
+        headers: { "Content-Type": "application/json" },
+      });
+
+      console.log(data);
 
       if (data.success) {
         toast.success(data.message);
         navigate("/add-music");
         setSongsData({ title: "", artist: "" });
-        setImage(null);
-        setSong(null);
+        setImageBase64("");
+        setSongBase64("");
         setImagePreview(null);
         setSongPreview(null);
       } else {
@@ -76,10 +85,13 @@ const UploadSongs = () => {
               id="song"
               accept="audio/*"
               hidden
-              onChange={(e) => {
+              onChange={async (e) => {
                 const file = e.target.files[0];
-                setSong(file);
-                if (file) setSongPreview(URL.createObjectURL(file));
+                if (file) {
+                  setSongPreview(URL.createObjectURL(file));
+                  const base64 = await convertToBase64(file);
+                  setSongBase64(base64);
+                }
               }}
             />
             <label htmlFor="song">
@@ -98,10 +110,13 @@ const UploadSongs = () => {
               id="image"
               accept="image/*"
               hidden
-              onChange={(e) => {
+              onChange={async (e) => {
                 const file = e.target.files[0];
-                setImage(file);
-                if (file) setImagePreview(URL.createObjectURL(file));
+                if (file) {
+                  setImagePreview(URL.createObjectURL(file));
+                  const base64 = await convertToBase64(file);
+                  setImageBase64(base64);
+                }
               }}
             />
             <label htmlFor="image">

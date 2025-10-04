@@ -5,6 +5,7 @@ import musicModel from '../models/musicModel.js';
 import path from 'path';
 import cloudinary from "../config/cloudinary.js";
 
+
 const register = async (req, res) => {
   try {
     const { username, email, password } = req.body;
@@ -93,50 +94,38 @@ const login = async (req, res) => {
 
 const uploadMusic = async (req, res) => {
   try {
-    const { title, artist } = req.body;
+    const { title, artist, music, image } = req.body;
 
-    if (!title || !artist) {
+    if (!title || !artist || !music || !image) {
       return res.status(400).json({ success: false, message: "All fields are required" });
     }
 
-    const musicFile = req.files.music?.[0];
-    const imageFile = req.files.image?.[0];
+    const uploadedMusic = await cloudinary.uploader.upload(music, {
+      resource_type: "video",
+      folder: "music",
+    });
 
-    if (!musicFile || !imageFile) {
-      return res.status(400).json({ success: false, message: "Music and Image files are required" });
-    }
+    const uploadedImage = await cloudinary.uploader.upload(image, {
+      folder: "music_streaming_app",
+    });
 
-    const uploadedMusic = await cloudinary.uploader.upload_stream(
-      { resource_type: 'video', folder: 'music' }, 
-      async (error, result) => {
-        if (error) return res.status(500).json({ success: false, message: error.message });
+    const musicDoc = new musicModel({
+      title,
+      artist,
+      filePath: uploadedMusic.secure_url,
+      imageFilePath: uploadedImage.secure_url,
+    });
 
-        const uploadedImage = await cloudinary.uploader.upload_stream(
-          { folder: 'music_streaming_app' },
-          async (errorImg, resultImg) => {
-            if (errorImg) return res.status(500).json({ success: false, message: errorImg.message });
+    await musicDoc.save();
 
-            const music = new musicModel({
-              title,
-              artist,
-              filePath: result.secure_url,
-              imageFilePath: resultImg.secure_url
-            });
-
-            await music.save();
-            res.status(201).json({ success: true, message: "Music uploaded successfully", music });
-          }
-        );
-
-        uploadedImage.end(imageFile.buffer);
-      }
-    );
-
-    uploadedMusic.end(musicFile.buffer);
-
+    res.status(201).json({
+      success: true,
+      message: "Music uploaded successfully",
+      music: musicDoc,
+    });
   } catch (error) {
-    console.log(error);
-    return res.status(500).json({ success: false, message: "Internal server error" });
+    console.error("Upload error:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
 
