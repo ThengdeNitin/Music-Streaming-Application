@@ -31,7 +31,7 @@ const UploadSongs = () => {
       formData.append("image", image);
 
       const { data } = await axios.post(
-        `${backendUrl}/api/admin/add-music`,
+        `${backendUrl}/api/admin/addmusic`,
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
@@ -91,7 +91,6 @@ const UploadSongs = () => {
             </label>
           </div>
 
-          {/* Image Upload */}
           <div className="flex flex-col items-center gap-3 w-full sm:w-1/2">
             <p className="text-sm sm:text-base font-medium">Upload Image</p>
             <input
@@ -115,7 +114,6 @@ const UploadSongs = () => {
           </div>
         </div>
 
-        {/* Song Info Inputs */}
         <div className="flex flex-col sm:flex-row gap-4">
           <input
             type="text"
@@ -137,7 +135,6 @@ const UploadSongs = () => {
           />
         </div>
 
-        {/* Submit Button */}
         <button
           type="submit"
           className="bg-black text-white py-2.5 px-6 md:py-3 md:px-10 rounded-lg shadow-md hover:bg-gray-800 transition text-sm sm:text-base font-medium"
