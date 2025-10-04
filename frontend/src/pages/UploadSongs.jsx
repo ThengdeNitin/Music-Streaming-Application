@@ -31,7 +31,7 @@ const UploadSongs = () => {
       formData.append("image", image);
 
       const { data } = await axios.post(
-        `${backendUrl}/api/admin/addmusic`,
+        `${backendUrl}/api/admin/add-music`,
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );

@@ -8,7 +8,7 @@ adminRouter.post('/register', register);
 adminRouter.post('/login', login);
 
 adminRouter.post(
-  '/addmusic',
+  '/add-music',
   upload.fields([
     { name: 'music', maxCount: 1 },
     { name: 'image', maxCount: 1 }
